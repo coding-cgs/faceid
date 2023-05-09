@@ -1,0 +1,58 @@
+plugins {
+    id 'com.android.library'
+}
+def versionNameStr = "1.0"
+def outputFileNameStr = "faceid-ks-${versionNameStr}.aar"
+android {
+    compileSdk 30
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 28
+        versionCode 1
+        versionName "${versionNameStr}"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    android.libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${outputFileNameStr}"
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs",includes: ['*.aar'])
+
+    compileOnly fileTree(dir: "../app/libs",includes: [
+            'uniapp-v8-release.aar',
+            'lib.5plus.base-release.aar',
+            'meglive_still.aar'
+    ])
+    compileOnly 'androidx.recyclerview:recyclerview:1.0.0'
+    compileOnly 'androidx.legacy:legacy-support-v4:1.0.0'
+    compileOnly 'androidx.appcompat:appcompat:1.0.0'
+    compileOnly 'com.alibaba:fastjson:1.2.83'
+    compileOnly 'com.squareup.okhttp3:okhttp:4.11.0'
+}
+
+
+task aar(type:Copy,dependsOn: assemble){
+    from('build/outputs/aar') {
+        include "${outputFileNameStr}"
+    }
+    into "../app/libs"
+}

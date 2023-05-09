@@ -1,0 +1,15 @@
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            allowInsecureProtocol=true
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        //jcenter() // Warning: this repository is going to shut down soon
+    }
+}
+rootProject.name = "faceid"
+include ':app'
+include ':ks'
